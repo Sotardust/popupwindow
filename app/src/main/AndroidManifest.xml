@@ -17,9 +17,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".TypeActivity"></activity>
-        <activity android:name=".fragment.PopupWindowActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation"
-            android:theme="@style/MyDialogStyleBottom" />
     </application>
 
 </manifest>

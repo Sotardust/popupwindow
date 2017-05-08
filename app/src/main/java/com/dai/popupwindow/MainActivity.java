@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         initData();
         MyAdapter myAdapter = new MyAdapter();
-        myAdapter.setData(data);
+        myAdapter.setDatas(data);
         recyclerView.setAdapter(myAdapter);
         myAdapter.setOnItemClickLister(new BaseRecyclerAdapter.OnItemClickLister<String>() {
             @Override

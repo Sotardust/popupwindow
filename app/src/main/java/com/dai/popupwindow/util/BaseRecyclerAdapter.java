@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<T> data;
+    private ArrayList<T> datas;
 
     private OnItemClickLister<T> onItemClickLister;
 
@@ -23,7 +23,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        final T value = data.get(position);
+        final T value = datas.get(position);
         onBindViewHolder(holder, position, value);
         if (onItemClickLister != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -37,7 +37,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return datas.size();
     }
 
     public void setOnItemClickLister(OnItemClickLister<T> onItemClickLister) {
@@ -51,16 +51,22 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         }
     }
 
-    public void setData(ArrayList<T> data) {
-        this.data = data;
+    public void setDatas(ArrayList<T> datas) {
+        this.datas = datas;
         notifyDataSetChanged();
+    }
+
+    public void getDatas() {
+        getData(datas);
     }
 
     public abstract void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position, T data);
 
     public abstract RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent);
 
-    public interface OnItemClickLister<T>{
+    public abstract void getData(ArrayList<T> datas);
+
+    public interface OnItemClickLister<T> {
         void onItemClick(int position, T data);
     }
 
