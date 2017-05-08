@@ -11,6 +11,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.dai.popupwindow.R;
+import com.dai.popupwindow.util.BaseRecyclerAdapter;
 
 import java.util.ArrayList;
 
@@ -144,24 +145,28 @@ public class MultiSelectPopWindow {
                 @Override
                 public void onClick(View v) {
                     System.out.println("MultiSelectPopWindow.onClick confirmBtn");
-                    ArrayList data = new ArrayList() ;
-                    builder.onConfirmListener.onConfirmClick(popupWindow,data,4);
+                    ArrayList data = new ArrayList();
+                    builder.onConfirmListener.onConfirmClick(popupWindow, data, 4);
                 }
             });
         }
 
-//        adapter.setOnItemClickLister(new BaseRecyclerAdapter.OnItemClickLister<String>() {
-//            @Override
-//            public void onItemClick(int position, String data) {
-//                adapter.getHashMap().get(position).setBackgroundResource(R.drawable.list_text_color_selector);
-                adapter.notifyDataSetChanged();
-//            }
-//        });
+        adapter.setOnSelectChangeListener(new MultiSelectListAdapter.OnSelectChangeListener() {
+            @Override
+            public void onSelectChange(int number) {
+
+                if (number >= 1) {
+                    selectedNumber.setVisibility(View.VISIBLE);
+                    selectedNumber.setText(String.valueOf(number));
+                }
+            }
+        });
     }
 
     private void initView(View view) {
         cancelBtn = (TextView) view.findViewById(R.id.cancel);
         title = (TextView) view.findViewById(R.id.title);
+        selectedNumber = (TextView) view.findViewById(R.id.select_number);
         selectAllBtn = (TextView) view.findViewById(R.id.all);
         confirmBtn = (TextView) view.findViewById(R.id.confirm);
         recyclerView = (RecyclerView) view.findViewById(R.id.multi_select_recyclerView);
