@@ -1,6 +1,6 @@
-# popupwindow
-多种弹窗
-#Java代码
+# MultiPopupWindow
+    一个可以从底部弹出PopupWindow多选弹出窗，返回选中的item的position与data
+# Java代码
      MultiSelectPopWindow popWindow = new MultiSelectPopWindow.Builder(getActivity())
                             .setTitle("标题")
                             .setCancelText("取消")
@@ -20,3 +20,5 @@
                             })
                             .build();
                     popWindow.show(getView());
+## 使用效果展示
+    ![image]()
