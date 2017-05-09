@@ -39,4 +39,3 @@
                             })
                             .build();
                     popWindow.show(getView());
- 
