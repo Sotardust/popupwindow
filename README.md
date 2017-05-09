@@ -8,7 +8,7 @@
 ## 添加Gradle依赖
 
      dependencies{
-         compile 'com.dai.library:popupWindow:1.0.0' 
+         compile 'com.dai.library:popupWindow:1.0.0'
      }
 
 ## 创建实例及配置
