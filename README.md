@@ -1,14 +1,14 @@
 # MultiPopupWindow
     一个可以从底部弹出PopupWindow多选弹出窗，返回选中的item的position与data
-## 效果图展示
-![image](https://github.com/Sotardust/popupwindow/blob/master/gif/device-2017-05-09-210111.png)
+## 动态效果图展示
+![image](https://github.com/Sotardust/popupwindow/blob/master/gif/popupWindow.gif)
 
 # 使用方式
 
 ## 添加Gradle依赖
 
      dependencies{
-         compile 'zlc.season:rxdownload2:2.0.0-beta4'
+         compile 'com.dai.library:popupWindow:1.0.0' 
      }
 
 ## 创建实例及配置

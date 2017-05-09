@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.dai.library.MultiSelectPopWindow;
 import com.dai.popupwindow.R;
@@ -38,9 +39,6 @@ public class MultiFragment extends Fragment {
                         .setCancelText("取消")
                         .setConfirmText("确认")
                         .setData(data)
-                        .setCancelTextColor(Color.BLUE)
-                        .setItemSelectedTextColor(Color.BLUE)
-                        .setNumberBackgroundColor(R.drawable.number_background)
                         .setOnCancelListener(new MultiSelectPopWindow.Builder.OnCancelClickListener() {
                             @Override
                             public void onCancelClick(PopupWindow popup) {
@@ -50,6 +48,7 @@ public class MultiFragment extends Fragment {
                         .setOnConfirmListener(new MultiSelectPopWindow.Builder.OnConfirmClickListener() {
                             @Override
                             public void onConfirmClick(PopupWindow popup, HashMap<Object, String> data) {
+                                Toast.makeText(getContext(),data.toString(),Toast.LENGTH_SHORT).show();
                                 popup.dismiss();
                             }
                         })
