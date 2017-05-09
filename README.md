@@ -1,7 +1,7 @@
 # MultiPopupWindow
     一个可以从底部弹出PopupWindow的多选弹出窗，返回选中的item的position与data
 ## 动态效果图展示
-![image](https://github.com/Sotardust/popupwindow/blob/master/gif/popupwindow.gif)
+![image](https://github.com/Sotardust/popupwindow/blob/master/gif/popupWindow.gif)
 
 # 使用方式
 
