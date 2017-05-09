@@ -21,4 +21,4 @@
                             .build();
                     popWindow.show(getView());
 ## 使用效果展示
-    ![image](https://github.com/Sotardust/popupwindow/blob/master/gif/device-2017-05-09-210110.png)
+    ![image](https://github.com/Sotardust/popupwindow/blob/master/gif/device-2017-05-09-210110.png?raw=true)
