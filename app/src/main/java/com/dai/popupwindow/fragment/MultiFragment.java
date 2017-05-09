@@ -1,5 +1,6 @@
 package com.dai.popupwindow.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -37,6 +38,9 @@ public class MultiFragment extends Fragment {
                         .setCancelText("取消")
                         .setConfirmText("确认")
                         .setData(data)
+                        .setCancelTextColor(Color.BLUE)
+                        .setItemSelectedTextColor(Color.BLUE)
+                        .setNumberBackgroundColor(R.drawable.number_background)
                         .setOnCancelListener(new MultiSelectPopWindow.Builder.OnCancelClickListener() {
                             @Override
                             public void onCancelClick(PopupWindow popup) {
