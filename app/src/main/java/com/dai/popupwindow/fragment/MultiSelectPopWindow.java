@@ -2,8 +2,10 @@ package com.dai.popupwindow.fragment;
 
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.DrawableRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -11,9 +13,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.dai.popupwindow.R;
-import com.dai.popupwindow.util.BaseRecyclerAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by dai on 2017/5/5.
@@ -26,46 +28,23 @@ public class MultiSelectPopWindow {
     private TextView selectedNumber;
     private TextView cancelBtn;
     private TextView confirmBtn;
-    private TextView title;
     private TextView selectAllBtn;
-    private ArrayList<Integer> mIndexList;
     private Builder builder;
-    private RecyclerView recyclerView;
 
     public static class Builder {
         private Activity activity;
-
         private ArrayList<String> data;
         private String title;
         private String confirmText;
         private String cancelText;
-        private boolean isOutsideTouchable;
-
-        public Builder setOnCancelListener(OnCancelClickListener onCancelListener) {
-            this.onCancelListener = onCancelListener;
-            return this;
-        }
-
         private OnCancelClickListener onCancelListener;
-
-        public Builder setOnConfirmListener(OnConfirmClickListener onConfirmListener) {
-            this.onConfirmListener = onConfirmListener;
-            return this;
-        }
-
         private OnConfirmClickListener onConfirmListener;
-        //        private OnConfirmClickListener onConfirmListener;
         private int confirmTextColor;
         private int cancelTextColor;
         private int titleTextColor;
-
-        public interface OnCancelClickListener {
-            void onCancelClick(PopupWindow popup);
-        }
-
-        public interface OnConfirmClickListener {
-            void onConfirmClick(PopupWindow popup, ArrayList data, int selectedNumber);
-        }
+        private int itemSelectedTextColor;
+        private int numberBackgroundColor;
+        private HashMap<Object, String> datas;
 
         public Builder(Activity activity) {
             this.activity = activity;
@@ -106,8 +85,36 @@ public class MultiSelectPopWindow {
             return this;
         }
 
+        public Builder setNumberBackgroundColor(int selectedNumberColor) {
+            this.numberBackgroundColor = selectedNumberColor;
+            return this;
+        }
+
+        public Builder setItemSelectedTextColor(int itemSelectedTextColor) {
+            this.itemSelectedTextColor = itemSelectedTextColor;
+            return this;
+        }
+
         public MultiSelectPopWindow build() {
             return new MultiSelectPopWindow(this);
+        }
+
+        public Builder setOnConfirmListener(OnConfirmClickListener onConfirmListener) {
+            this.onConfirmListener = onConfirmListener;
+            return this;
+        }
+
+        public Builder setOnCancelListener(OnCancelClickListener onCancelListener) {
+            this.onCancelListener = onCancelListener;
+            return this;
+        }
+
+        public interface OnCancelClickListener {
+            void onCancelClick(PopupWindow popup);
+        }
+
+        public interface OnConfirmClickListener {
+            void onConfirmClick(PopupWindow popup, HashMap<Object, String> data, int selectedNumber);
         }
     }
 
@@ -124,14 +131,12 @@ public class MultiSelectPopWindow {
         popupWindow.setTouchable(true);
         popupWindow.setOutsideTouchable(true);
         initView(popView);
-
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
                 backgroundAlpha(1f);
             }
         });
-
         if (builder.onCancelListener != null) {
             cancelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -144,36 +149,53 @@ public class MultiSelectPopWindow {
             confirmBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println("MultiSelectPopWindow.onClick confirmBtn");
-                    ArrayList data = new ArrayList();
-                    builder.onConfirmListener.onConfirmClick(popupWindow, data, 4);
+                    builder.onConfirmListener.onConfirmClick(popupWindow, builder.datas, 4);
                 }
             });
         }
 
         adapter.setOnSelectChangeListener(new MultiSelectListAdapter.OnSelectChangeListener() {
             @Override
-            public void onSelectChange(int number) {
-
+            public void onSelectChange(int number, HashMap<Object, String> selectValues) {
                 if (number >= 1) {
                     selectedNumber.setVisibility(View.VISIBLE);
                     selectedNumber.setText(String.valueOf(number));
                 }
+                builder.datas = selectValues;
+            }
+        });
+        selectAllBtn.setOnClickListener(new View.OnClickListener() {
+            boolean isChecked = true;
+
+            @Override
+            public void onClick(View v) {
+                if (isChecked) {
+                    selectAllBtn.setText("取消全选");
+                    adapter.selectAll();
+                } else {
+                    adapter.deselectAll();
+                    selectAllBtn.setText("全选");
+                    selectedNumber.setVisibility(View.INVISIBLE);
+                }
+                isChecked = !isChecked;
             }
         });
     }
 
     private void initView(View view) {
         cancelBtn = (TextView) view.findViewById(R.id.cancel);
-        title = (TextView) view.findViewById(R.id.title);
+        TextView title = (TextView) view.findViewById(R.id.title);
         selectedNumber = (TextView) view.findViewById(R.id.select_number);
         selectAllBtn = (TextView) view.findViewById(R.id.all);
         confirmBtn = (TextView) view.findViewById(R.id.confirm);
-        recyclerView = (RecyclerView) view.findViewById(R.id.multi_select_recyclerView);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.multi_select_recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(builder.activity.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new MultiSelectListAdapter();
-        System.out.println("builder.data = " + builder.data);
+        if (builder.itemSelectedTextColor != 0) {
+            adapter = new MultiSelectListAdapter(builder.activity, builder.itemSelectedTextColor);
+        } else {
+            adapter = new MultiSelectListAdapter(builder.activity);
+        }
         adapter.setDatas(builder.data);
         recyclerView.setAdapter(adapter);
 
@@ -184,6 +206,7 @@ public class MultiSelectPopWindow {
         setTextColor(title, builder.titleTextColor);
         setTextColor(cancelBtn, builder.cancelTextColor);
         setTextColor(confirmBtn, builder.confirmTextColor);
+        setBackgroundColor(selectedNumber, builder.numberBackgroundColor);
 
     }
 
@@ -212,23 +235,33 @@ public class MultiSelectPopWindow {
     }
 
     /**
+     * 文本设置背景色
+     *
+     * @param textView 数字文本
+     * @attr resid    R.drawable.xxx.xml
+     */
+    private void setBackgroundColor(TextView textView, @DrawableRes int resid) {
+        if (textView != null && resid != 0) {
+            try {
+                textView.setBackgroundResource(resid);
+            } catch (Exception e) {
+                Log.w("数字背景色无效：", "右上角数字背景色应设置 R.drawable.xxx");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
      * 设置弹窗位置
      *
      * @param parent view
      */
     public void show(View parent) {
         if (popupWindow != null) {
-            System.out.println("0.5f");
             backgroundAlpha(0.5f);
             popupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
         }
     }
-
-//    public void dismiss() {
-//        if (popupWindow != null) {
-//            popupWindow.dismiss();
-//        }
-//    }
 
     /**
      * 设置添加屏幕的背景透明度
@@ -240,8 +273,6 @@ public class MultiSelectPopWindow {
             WindowManager.LayoutParams lp = builder.activity.getWindow().getAttributes();
             lp.alpha = bgAlpha; //0.0-1.0
             builder.activity.getWindow().setAttributes(lp);
-
-            System.out.println("背景色设置成功 = ");
         } catch (Exception e) {
             e.printStackTrace();
         }

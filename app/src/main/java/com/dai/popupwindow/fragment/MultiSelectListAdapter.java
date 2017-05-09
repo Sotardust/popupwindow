@@ -1,6 +1,6 @@
 package com.dai.popupwindow.fragment;
 
-import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.dai.popupwindow.R;
 import com.dai.popupwindow.util.BaseRecyclerAdapter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,11 +19,26 @@ import java.util.Set;
  * Created by dai on 2017/5/8.
  */
 
+
 public class MultiSelectListAdapter extends BaseRecyclerAdapter<String> {
 
-    ArrayList<String> datas;
+    private int deselectColor = Color.GRAY;
+    private int selectColor = 0;
+    private boolean isSelected = false;
 
     private Set<Integer> selectedNumber = new HashSet<>();
+    private HashMap<Object, String> selectValues = new HashMap<>();
+
+    private Activity activity;
+
+    public MultiSelectListAdapter(Activity activity) {
+        this.activity = activity;
+    }
+
+    public MultiSelectListAdapter(Activity activity, int selectColor) {
+        this.activity = activity;
+        this.selectColor = selectColor;
+    }
 
     public void setOnSelectChangeListener(OnSelectChangeListener onSelectChangeListener) {
         this.onSelectChangeListener = onSelectChangeListener;
@@ -33,55 +47,89 @@ public class MultiSelectListAdapter extends BaseRecyclerAdapter<String> {
     private OnSelectChangeListener onSelectChangeListener;
 
     public interface OnSelectChangeListener {
-        void onSelectChange(int number);
+        void onSelectChange(int number, HashMap<Object, String> selectValues);
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position, String data) {
-        System.out.println("position = " + position);
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position, final String data) {
         if (viewHolder instanceof SelectHolder) {
             ((SelectHolder) viewHolder).textView.setText(data);
+            final boolean[] isChecked = {true};
+            if (isSelected) {
+                isChecked[0] = true;
+                setTextColor(((SelectHolder) viewHolder).textView, selectColor);
+            } else {
+                setTextColor(((SelectHolder) viewHolder).textView, deselectColor);
+                isChecked[0] = false;
+            }
+
             ((SelectHolder) viewHolder).textView.setOnClickListener(new View.OnClickListener() {
-                boolean isChecked = true;
+                int color = deselectColor;
+
                 @Override
                 public void onClick(View v) {
-                    if (isChecked) {
+                    if (!isChecked[0]) {
                         selectedNumber.add(position);
-                        ((SelectHolder) viewHolder).textView.setTextColor(Color.rgb(45, 234, 23));
+                        selectValues.put(position, data);
+                        color = selectColor;
                     } else {
                         selectedNumber.remove(position);
-                        ((SelectHolder) viewHolder).textView.setTextColor(Color.BLUE);
+                        selectValues.remove(position);
+                        color = deselectColor;
                     }
-                    isChecked = !isChecked;
-                    onSelectChangeListener.onSelectChange(selectedNumber.size());
+                    isChecked[0] = !isChecked[0];
+                    setTextColor(((SelectHolder) viewHolder).textView, color);
+                    onSelectChangeListener.onSelectChange(selectedNumber.size(), selectValues);
                 }
             });
-
         }
     }
 
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
-        System.out.println("parent = " + parent);
+        if (selectColor == 0) {
+            selectColor = activity.getResources().getColor(R.color.colorAccent);
+        }
+        deselectColor = Color.GRAY;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler, parent, false);
         return new SelectHolder(view);
     }
 
-    public void setSelectAll() {
-        for (int i = 0; i < datas.size(); i++) {
+    public void selectAll() {
+        for (int i = 0; i < getDatas().size(); i++) {
             selectedNumber.add(i);
+            selectValues.put(i, getDatas().get(i));
         }
+        setSelectColor(selectColor);
+        isSelected = !isSelected;
+        onSelectChangeListener.onSelectChange(selectedNumber.size(), selectValues);
+
     }
 
-    public void setCancelSelectAll() {
+    public void deselectAll() {
         selectedNumber.clear();
+        selectValues.clear();
+        setColor(deselectColor);
+        isSelected = !isSelected;
+        notifyDataSetChanged();
+        onSelectChangeListener.onSelectChange(selectedNumber.size(), selectValues);
     }
 
-    @Override
-    public void getData(ArrayList<String> datas) {
-        this.datas = datas;
+    public void setColor(int deselectColor) {
+        System.out.println("MultiSelectListAdapter.setColor");
+        this.deselectColor = deselectColor;
+        notifyDataSetChanged();
     }
+
+    private void setTextColor(TextView textView, int color) {
+        textView.setTextColor(color);
+    }
+
+    public void setSelectColor(int selectColor) {
+        this.selectColor = selectColor;
+        notifyDataSetChanged();
+    }
+
 
     private class SelectHolder extends BaseRecyclerAdapter.ViewHolder {
         TextView textView;

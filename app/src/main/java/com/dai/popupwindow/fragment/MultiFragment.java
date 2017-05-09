@@ -12,6 +12,7 @@ import android.widget.PopupWindow;
 import com.dai.popupwindow.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by dai on 2017/5/5.
@@ -30,7 +31,7 @@ public class MultiFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MultiSelectPopWindow popWindow  = new MultiSelectPopWindow.Builder(getActivity())
+                MultiSelectPopWindow popWindow = new MultiSelectPopWindow.Builder(getActivity())
                         .setTitle("标题")
                         .setCancelText("取消")
                         .setConfirmText("确认")
@@ -43,18 +44,17 @@ public class MultiFragment extends Fragment {
                         })
                         .setOnConfirmListener(new MultiSelectPopWindow.Builder.OnConfirmClickListener() {
                             @Override
-                            public void onConfirmClick(PopupWindow popup, ArrayList data, int number) {
+                            public void onConfirmClick(PopupWindow popup, HashMap<Object, String> datas, int number) {
                                 popup.dismiss();
-                                System.out.println("data = " + data.size());
-                                System.out.println("number = " + number);
                             }
                         })
                         .build();
-                popWindow.show(getView()) ;
+                popWindow.show(getView());
             }
         });
         return view;
     }
+
     private void initData() {
         data.add("底部弹出多选框");
         data.add("某控件下弹窗");

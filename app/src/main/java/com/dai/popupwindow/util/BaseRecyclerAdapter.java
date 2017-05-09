@@ -56,15 +56,13 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         notifyDataSetChanged();
     }
 
-    public void getDatas() {
-        getData(datas);
+    public ArrayList<T> getDatas() {
+      return  datas ;
     }
 
     public abstract void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position, T data);
 
     public abstract RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent);
-
-    public abstract void getData(ArrayList<T> datas);
 
     public interface OnItemClickLister<T> {
         void onItemClick(int position, T data);

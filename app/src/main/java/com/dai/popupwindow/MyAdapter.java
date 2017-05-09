@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import com.dai.popupwindow.util.BaseRecyclerAdapter;
 
-import java.util.ArrayList;
-
 /**
  * Created by dai on 2017/5/5.
  */
@@ -29,10 +27,6 @@ public class MyAdapter extends BaseRecyclerAdapter<String> {
         System.out.println("parent = " + parent);
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_recycler, parent, false);
         return new MyHolder(view);
-    }
-
-    @Override
-    public void getData(ArrayList<String> datas) {
     }
 
     private class MyHolder extends BaseRecyclerAdapter.ViewHolder {
