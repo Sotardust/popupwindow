@@ -8,8 +8,8 @@
 ## 添加Gradle依赖
 
      dependencies{
-              compile 'zlc.season:rxdownload2:2.0.0-beta4'
-    	}
+         compile 'zlc.season:rxdownload2:2.0.0-beta4'
+     }
 
 ## 创建实例及配置
 ### 1、创建popupWindow弹出窗实例
