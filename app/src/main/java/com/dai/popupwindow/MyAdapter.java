@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.dai.popupwindow.util.BaseRecyclerAdapter;
+import com.dai.library.util.BaseRecyclerAdapter;
 
 /**
  * Created by dai on 2017/5/5.

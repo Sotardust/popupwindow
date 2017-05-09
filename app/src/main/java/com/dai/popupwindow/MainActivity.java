@@ -8,7 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
-import com.dai.popupwindow.util.BaseRecyclerAdapter;
+import com.dai.library.util.BaseRecyclerAdapter;
 
 import java.util.ArrayList;
 
@@ -26,14 +26,14 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         initData();
         MyAdapter myAdapter = new MyAdapter();
-        myAdapter.setDatas(data);
+        myAdapter.setData(data);
         recyclerView.setAdapter(myAdapter);
         myAdapter.setOnItemClickLister(new BaseRecyclerAdapter.OnItemClickLister<String>() {
             @Override
             public void onItemClick(int position, String data) {
                 Toast.makeText(getApplicationContext(), data, Toast.LENGTH_SHORT).show();
-                Intent intent  = new Intent(MainActivity.this,TypeActivity.class);
-                intent.putExtra("popupType",position);
+                Intent intent = new Intent(MainActivity.this, TypeActivity.class);
+                intent.putExtra("popupType", position);
                 startActivity(intent);
             }
         });

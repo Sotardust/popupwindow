@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
+import com.dai.library.MultiSelectPopWindow;
 import com.dai.popupwindow.R;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class MultiFragment extends Fragment {
                         })
                         .setOnConfirmListener(new MultiSelectPopWindow.Builder.OnConfirmClickListener() {
                             @Override
-                            public void onConfirmClick(PopupWindow popup, HashMap<Object, String> datas, int number) {
+                            public void onConfirmClick(PopupWindow popup, HashMap<Object, String> data) {
                                 popup.dismiss();
                             }
                         })

@@ -1,4 +1,4 @@
-package com.dai.popupwindow.util;
+package com.dai.library.util;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private ArrayList<T> datas;
+    private ArrayList<T> data;
 
     private OnItemClickLister<T> onItemClickLister;
 
@@ -23,7 +23,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        final T value = datas.get(position);
+        final T value = data.get(position);
         onBindViewHolder(holder, position, value);
         if (onItemClickLister != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -37,7 +37,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
 
     @Override
     public int getItemCount() {
-        return datas.size();
+        return data.size();
     }
 
     public void setOnItemClickLister(OnItemClickLister<T> onItemClickLister) {
@@ -51,13 +51,13 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<Recycl
         }
     }
 
-    public void setDatas(ArrayList<T> datas) {
-        this.datas = datas;
+    public void setData(ArrayList<T> data) {
+        this.data = data;
         notifyDataSetChanged();
     }
 
-    public ArrayList<T> getDatas() {
-      return  datas ;
+    public ArrayList<T> getData() {
+      return  data ;
     }
 
     public abstract void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position, T data);

@@ -1,4 +1,4 @@
-package com.dai.popupwindow.fragment;
+package com.dai.library;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -8,8 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.dai.popupwindow.R;
-import com.dai.popupwindow.util.BaseRecyclerAdapter;
+import com.dai.library.util.BaseRecyclerAdapter;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,11 +24,10 @@ public class MultiSelectListAdapter extends BaseRecyclerAdapter<String> {
     private int deselectColor = Color.GRAY;
     private int selectColor = 0;
     private boolean isSelected = false;
-
+    private Activity activity;
+    private OnSelectChangeListener onSelectChangeListener;
     private Set<Integer> selectedNumber = new HashSet<>();
     private HashMap<Object, String> selectValues = new HashMap<>();
-
-    private Activity activity;
 
     public MultiSelectListAdapter(Activity activity) {
         this.activity = activity;
@@ -38,16 +36,6 @@ public class MultiSelectListAdapter extends BaseRecyclerAdapter<String> {
     public MultiSelectListAdapter(Activity activity, int selectColor) {
         this.activity = activity;
         this.selectColor = selectColor;
-    }
-
-    public void setOnSelectChangeListener(OnSelectChangeListener onSelectChangeListener) {
-        this.onSelectChangeListener = onSelectChangeListener;
-    }
-
-    private OnSelectChangeListener onSelectChangeListener;
-
-    public interface OnSelectChangeListener {
-        void onSelectChange(int number, HashMap<Object, String> selectValues);
     }
 
     @Override
@@ -95,10 +83,13 @@ public class MultiSelectListAdapter extends BaseRecyclerAdapter<String> {
         return new SelectHolder(view);
     }
 
+    /**
+     * 全选
+     */
     public void selectAll() {
-        for (int i = 0; i < getDatas().size(); i++) {
+        for (int i = 0; i < getData().size(); i++) {
             selectedNumber.add(i);
-            selectValues.put(i, getDatas().get(i));
+            selectValues.put(i, getData().get(i));
         }
         setSelectColor(selectColor);
         isSelected = !isSelected;
@@ -106,6 +97,9 @@ public class MultiSelectListAdapter extends BaseRecyclerAdapter<String> {
 
     }
 
+    /**
+     * 取消全选
+     */
     public void deselectAll() {
         selectedNumber.clear();
         selectValues.clear();
@@ -115,8 +109,12 @@ public class MultiSelectListAdapter extends BaseRecyclerAdapter<String> {
         onSelectChangeListener.onSelectChange(selectedNumber.size(), selectValues);
     }
 
+    /**
+     * 设置未选中item中text的字体颜色
+     *
+     * @param deselectColor int型
+     */
     public void setColor(int deselectColor) {
-        System.out.println("MultiSelectListAdapter.setColor");
         this.deselectColor = deselectColor;
         notifyDataSetChanged();
     }
@@ -125,11 +123,24 @@ public class MultiSelectListAdapter extends BaseRecyclerAdapter<String> {
         textView.setTextColor(color);
     }
 
+    /**
+     * 设置选中的item中text的字体颜色
+     *
+     * @param selectColor int型
+     */
     public void setSelectColor(int selectColor) {
         this.selectColor = selectColor;
         notifyDataSetChanged();
     }
 
+    public void setOnSelectChangeListener(OnSelectChangeListener onSelectChangeListener) {
+        this.onSelectChangeListener = onSelectChangeListener;
+    }
+
+
+    public interface OnSelectChangeListener {
+        void onSelectChange(int number, HashMap<Object, String> selectValues);
+    }
 
     private class SelectHolder extends BaseRecyclerAdapter.ViewHolder {
         TextView textView;

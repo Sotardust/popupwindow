@@ -1,4 +1,4 @@
-package com.dai.popupwindow.fragment;
+package com.dai.library;
 
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-
-import com.dai.popupwindow.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,7 +112,7 @@ public class MultiSelectPopWindow {
         }
 
         public interface OnConfirmClickListener {
-            void onConfirmClick(PopupWindow popup, HashMap<Object, String> data, int selectedNumber);
+            void onConfirmClick(PopupWindow popup, HashMap<Object, String> data);
         }
     }
 
@@ -137,6 +135,8 @@ public class MultiSelectPopWindow {
                 backgroundAlpha(1f);
             }
         });
+
+
         if (builder.onCancelListener != null) {
             cancelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -149,7 +149,7 @@ public class MultiSelectPopWindow {
             confirmBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    builder.onConfirmListener.onConfirmClick(popupWindow, builder.datas, 4);
+                    builder.onConfirmListener.onConfirmClick(popupWindow, builder.datas);
                 }
             });
         }
@@ -196,13 +196,11 @@ public class MultiSelectPopWindow {
         } else {
             adapter = new MultiSelectListAdapter(builder.activity);
         }
-        adapter.setDatas(builder.data);
+        adapter.setData(builder.data);
         recyclerView.setAdapter(adapter);
-
         setText(title, builder.title);
         setText(cancelBtn, builder.cancelText);
         setText(confirmBtn, builder.confirmText);
-
         setTextColor(title, builder.titleTextColor);
         setTextColor(cancelBtn, builder.cancelTextColor);
         setTextColor(confirmBtn, builder.confirmTextColor);
@@ -238,14 +236,14 @@ public class MultiSelectPopWindow {
      * 文本设置背景色
      *
      * @param textView 数字文本
-     * @attr resid    R.drawable.xxx.xml
+     * @attr resId    R.drawable.xxx.xml
      */
-    private void setBackgroundColor(TextView textView, @DrawableRes int resid) {
-        if (textView != null && resid != 0) {
+    private void setBackgroundColor(TextView textView, @DrawableRes int resId) {
+        if (textView != null && resId != 0) {
             try {
-                textView.setBackgroundResource(resid);
+                textView.setBackgroundResource(resId);
             } catch (Exception e) {
-                Log.w("数字背景色无效：", "右上角数字背景色应设置 R.drawable.xxx");
+                Log.e("数字背景色无效：", "右上角数字背景色应设置 R.drawable.xxx");
                 e.printStackTrace();
             }
         }
