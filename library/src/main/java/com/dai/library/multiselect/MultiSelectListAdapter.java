@@ -1,4 +1,4 @@
-package com.dai.library;
+package com.dai.library.multiselect;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.dai.library.R;
 import com.dai.library.util.BaseRecyclerAdapter;
 
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.dai.library;
+package com.dai.library.multiselect;
 
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
+import com.dai.library.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,8 +85,8 @@ public class MultiSelectPopWindow {
             return this;
         }
 
-        public Builder setNumberBackgroundColor(int selectedNumberColor) {
-            this.numberBackgroundColor = selectedNumberColor;
+        public Builder setNumberBackgroundColor(int numberBackgroundColor) {
+            this.numberBackgroundColor = numberBackgroundColor;
             return this;
         }
 
@@ -170,11 +172,11 @@ public class MultiSelectPopWindow {
             @Override
             public void onClick(View v) {
                 if (isChecked) {
-                    selectAllBtn.setText("取消全选");
+                    selectAllBtn.setText(R.string.deselect_all);
                     adapter.selectAll();
                 } else {
                     adapter.deselectAll();
-                    selectAllBtn.setText("全选");
+                    selectAllBtn.setText(R.string.select_all);
                     selectedNumber.setVisibility(View.INVISIBLE);
                 }
                 isChecked = !isChecked;
@@ -243,7 +245,7 @@ public class MultiSelectPopWindow {
             try {
                 textView.setBackgroundResource(resId);
             } catch (Exception e) {
-                Log.e("数字背景色无效：", "右上角数字背景色应设置 R.drawable.xxx");
+                Log.e("error", builder.activity.getResources().getString(R.string.background_exception));
                 e.printStackTrace();
             }
         }
