@@ -43,7 +43,7 @@
     一个可以高度定制的弹出式菜单
     
 ## 动态效果图展示
-    ![image](https://github.com/Sotardust/popupwindow/blob/master/gif/popupWindow.gif)
+![image](https://github.com/Sotardust/popupwindow/blob/master/gif/popupWindow.gif)
 ## 弹出菜单的使用方式
     PopupMenu popupMenu = new PopupMenu.Builder(getActivity())
                  .setAdapter(adapter)  //必须设置选项 设置适配器
