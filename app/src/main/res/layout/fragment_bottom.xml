@@ -26,7 +26,7 @@
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="位于某控件下（设置默认弹窗宽度与text自适应宽度相等）"
+        android:text="位于某控件下（设置弹出式菜单背景色以及宽度与text自适应宽度相等）"
         android:layout_below="@+id/button4"
         android:layout_alignParentStart="true" />
 
