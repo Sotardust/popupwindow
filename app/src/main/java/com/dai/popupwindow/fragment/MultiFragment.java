@@ -39,7 +39,7 @@ public class MultiFragment extends Fragment {
                         .setCancelText("取消")
                         .setConfirmText("确认")
                         .setData(data)
-                        .setNumberBackgroundColor(Color.BLUE)
+//                        .setNumberBackgroundColor(Color.BLUE)
                         .setOnCancelListener(new MultiSelectPopWindow.Builder.OnCancelClickListener() {
                             @Override
                             public void onCancelClick(PopupWindow popup) {
