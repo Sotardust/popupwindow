@@ -6,11 +6,27 @@
 ## 使用方式
 
 ## 添加Gradle依赖
-
+### 使用Bintray jCenter配置如下
+   
      dependencies{
      
      }
-
+     
+### 使用JitPack repository配置如下
+    //在build.gradle中添加
+    allprojects {
+    		repositories {
+    			...
+    			maven { url 'https://jitpack.io' }
+    		}
+    	}
+    	
+    //添加依赖
+    dependencies {
+    	compile 'com.github.Sotardust:popupwindow:v1.0.0'
+    }
+    
+[![](https://jitpack.io/v/Sotardust/popupwindow.svg)](https://jitpack.io/#Sotardust/popupwindow)
 ## 创建实例及配置
 ### 1、创建popupWindow弹出窗实例
     MultiSelectPopWindow popWindow = new MultiSelectPopWindow.Builder(getActivity()).build();
