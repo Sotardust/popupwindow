@@ -27,6 +27,7 @@ public class SuspensionFragment  extends Fragment {
 
             }
         });
+
         return view;
     }
 }
